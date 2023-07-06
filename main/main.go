@@ -8,11 +8,26 @@ import (
 
 func main() {
 	arg := os.Args[1]
-	
 	chars := []rune(arg)
 	if arg == ""{
 		return
 	}
+
+	var counter int = 0 
+	var words []string
+	words = append(words,"")
+	for index, char := range chars{
+		if index != len(chars){
+		if (chars[index] == '\\') && (chars[index+1] == 'n'){
+			words = append(words, "new line")
+			counter++
+			words[counter] = ""
+		}
+		}
+		words[counter] = words[counter] + string(char)
+
+	}
+
 	//read from the first argument
 	readFile, err := os.Open("../standard.txt")
 	if err != nil {
@@ -27,6 +42,12 @@ func main() {
 		lines = append(lines, fileScanner.Text())
 	}
 
+	for _, word := range words{
+		if word == "\\n"{
+			fmt.Println()
+			continue
+		}
+	chars = []rune(word)
 	for i := 0; i < 8; i++ {
 	for _,char := range chars{
 /* 		if char == '\\'{
@@ -40,6 +61,10 @@ func main() {
 	fmt.Println()
 
 }
+	}
+
+
+// Not effieciat solution xc
 
 //	for _,char := range chars{
 // 	fmt.Println(char)
@@ -61,6 +86,7 @@ func main() {
 	// 		break
 	// 	}
 	// }
+	
 	readFile.Close() //close the readfile object ... system resources are freed up and that the file is properly released.
 
 }
