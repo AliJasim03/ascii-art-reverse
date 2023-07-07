@@ -8,6 +8,10 @@ import (
 
 func main() {
 
+	if len(os.Args) != 2{
+		fmt.Println("Please provide one argument to art")
+		return
+	}
 	//read from the first argument
 	arg := os.Args[1]
 	if arg == "" {
