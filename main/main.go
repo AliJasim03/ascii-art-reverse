@@ -1,9 +1,9 @@
 package main
 
 import (
-	"asciiArt"
 	"fmt"
 	"os"
+	"asciiArt"
 )
 
 func main() {
@@ -19,7 +19,6 @@ func main() {
 	}
 	asciiArt.Print()
 	words := asciiArt.SplitArg(arg)
-
 	var lines []string = asciiArt.GetAsciiArt()
 
 	for _, word := range words {

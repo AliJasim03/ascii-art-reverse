@@ -8,9 +8,9 @@ func SplitArg(arg string) []string {
 	for index, char := range chars {
 		if index != len(chars) {
 			if (chars[index] == '\\') && (chars[index+1] == 'n') {
-				words = append(words, "new line")
+				words = append(words, "")
 				counter++
-				words[counter] = ""
+				// words[counter] = ""
 			}
 		}
 		words[counter] = words[counter] + string(char)
