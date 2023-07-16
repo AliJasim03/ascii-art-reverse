@@ -1,5 +1,5 @@
 package asciiArt
-// import "fmt"
+
 func SplitArg(arg string) []string {
 	chars := []rune(arg)
 	var counter int = 0
