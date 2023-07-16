@@ -7,7 +7,7 @@ import (
 )
 
 func GetAsciiArt() []string {
-	readFile, err := os.Open("../standard.txt")
+	readFile, err := os.Open("readTxtFile/standard.txt")
 	if err != nil {
 		fmt.Println("There is an error on the sample file") //print and error msg if there is any
 	}
