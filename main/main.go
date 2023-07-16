@@ -17,16 +17,19 @@ func main() {
 	if arg == "" {
 		return
 	}
-	asciiArt.Print()
+
 	words := asciiArt.SplitArg(arg)
 	var lines []string = asciiArt.GetAsciiArt()
 
-	for _, word := range words {
+	for index, word := range words {
 		if word == ""{
 			continue
 		}
-		if word == "\\n" {
+		if word == "\\n" && words[index+1] == ""{
 			fmt.Println()
+			continue
+		}
+		if word == "\\n" {
 			continue
 		}
 		chars := []rune(word)
