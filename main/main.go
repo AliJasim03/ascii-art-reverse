@@ -22,6 +22,9 @@ func main() {
 	var lines []string = asciiArt.GetAsciiArt()
 
 	for _, word := range words {
+		if word == ""{
+			continue
+		}
 		if word == "\\n" {
 			fmt.Println()
 			continue
