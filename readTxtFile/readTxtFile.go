@@ -6,10 +6,11 @@ import (
 	"os"
 )
 
-func GetAsciiArt() []string {
-	readFile, err := os.Open("readTxtFile/standard.txt")
+func GetAsciiArt(s string) []string {
+	s = "Ascii_files/" + s + ".txt"
+	readFile, err := os.Open(s)
 	if err != nil {
-		fmt.Println("There is an error on the sample file") //print and error msg if there is any
+		fmt.Println("There is an error on the banner file") //print and error msg if there is any
 	}
 	defer readFile.Close()
 

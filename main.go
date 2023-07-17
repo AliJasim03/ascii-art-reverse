@@ -8,10 +8,11 @@ import (
 )
 
 func main() {
-	// check if the argument is not equals 2
+	// check if the argument is not equals 2 or 3
+	argsLength := len(os.Args)
 
-	if len(os.Args) != 2 {
-		fmt.Println("Please provide one phrase to art")
+	if argsLength != 2 && argsLength != 3 {
+		fmt.Println("Usage: go run . [STRING] [BANNER]\nEX: go run . something standard")
 		return
 	}
 	//read from the first argument
@@ -22,10 +23,19 @@ func main() {
 
 	//split the argument into an array of string
 	words := strings.Split(arg, "\\n")
+	banner := "standard"
 
+	if argsLength == 3 {
+		banner = os.Args[2]
+	}
 	//read from the lines of the file
-	var lines []string = asciiArt.GetAsciiArt()
+	var lines []string = asciiArt.GetAsciiArt(banner)
 
+	if lines == nil {
+		fmt.Println("Please choose a valid banner option from the list")
+		fmt.Println("shadow, standard or thinkertoy")
+		return
+	}
 	//loop throught out the array of strings
 
 	for _, word := range words {
