@@ -42,8 +42,8 @@ func AreStringSlicesEqual(slice1, slice2 []string) error {
 //
 //	err: An error encountered during program execution, if any.
 //	[]string: The output of the program as a string slice, where each element is 1 line.
-func RunProgram(text string, banner string) (err error, output []string) {
-	cmd := exec.Command("go", "run", ".", text,banner)
+func RunProgram(text string) (err error, output []string) {
+	cmd := exec.Command("go", "run", ".", text)
 
 	o, e := cmd.CombinedOutput()
 	if e != nil {
@@ -63,7 +63,322 @@ func TestAudit1(t *testing.T) {
 		`                               `,
 		`                               `,
 	}
-	err, txt := RunProgram("hello", "standard")
+	err, txt := RunProgram("hello")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \"hello\"")
+	}
+}
+
+func TestAudit2(t *testing.T) {
+	ans := []string{
+		` _    _   ______   _        _         ____   `,
+		`| |  | | |  ____| | |      | |       / __ \  `,
+		`| |__| | | |__    | |      | |      | |  | | `,
+		`|  __  | |  __|   | |      | |      | |  | | `,
+		`| |  | | | |____  | |____  | |____  | |__| | `,
+		`|_|  |_| |______| |______| |______|  \____/  `,
+		`                                             `,
+		`                                             `,
+	}
+	err, txt := RunProgram("HELLO")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \"HELLO\"")
+	}
+}
+
+func TestAudit3(t *testing.T) {
+	ans := []string{
+		` _    _          _        _                 _    _           __  __           _   _  `,
+		`| |  | |        | |      | |               | |  | |         |  \/  |         | \ | | `,
+		`| |__| |   ___  | |      | |   ___         | |__| |  _   _  | \  / |   __ _  |  \| | `,
+		"|  __  |  / _ \\ | |      | |  / _ \\        |  __  | | | | | | |\\/| |  / _` | | . ` | ",
+		`| |  | | |  __/ | |____  | | | (_) |       | |  | | | |_| | | |  | | | (_| | | |\  | `,
+		`|_|  |_|  \___| |______| |_|  \___/        |_|  |_|  \__,_| |_|  |_|  \__,_| |_| \_| `,
+		`                                                                                     `,
+		`                                                                                     `,
+	}
+	err, txt := RunProgram("HeLlo HuMaN")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \"HeLlo HuMaN\"")
+	}
+}
+
+func TestAudit4(t *testing.T) {
+	ans := []string{
+		`     _    _          _   _                         _______   _                           `,
+		` _  | |  | |        | | | |                ____   |__   __| | |                          `,
+		`/ | | |__| |   ___  | | | |   ___         |___ \     | |    | |__     ___   _ __    ___  `,
+		`| | |  __  |  / _ \ | | | |  / _ \          __) |    | |    |  _ \   / _ \ | '__|  / _ \ `,
+		`| | | |  | | |  __/ | | | | | (_) |        / __/     | |    | | | | |  __/ | |    |  __/ `,
+		`|_| |_|  |_|  \___| |_| |_|  \___/        |_____|    |_|    |_| |_|  \___| |_|     \___| `,
+		`                                                                                         `,
+		`                                                                                         `,
+	}
+	err, txt := RunProgram("1Hello 2There")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \"1Hello 2There\"")
+	}
+}
+
+func TestAudit5(t *testing.T) {
+	ans := []string{
+		` _    _          _   _          `,
+		`| |  | |        | | | |         `,
+		`| |__| |   ___  | | | |   ___   `,
+		`|  __  |  / _ \ | | | |  / _ \  `,
+		`| |  | | |  __/ | | | | | (_) | `,
+		`|_|  |_|  \___| |_| |_|  \___/  `,
+		`                                `,
+		`                                `,
+		` _______   _                           `,
+		`|__   __| | |                          `,
+		`   | |    | |__     ___   _ __    ___  `,
+		`   | |    |  _ \   / _ \ | '__|  / _ \ `,
+		`   | |    | | | | |  __/ | |    |  __/ `,
+		`   |_|    |_| |_|  \___| |_|     \___| `,
+		`                                       `,
+		`                                       `,
+	}
+	err, txt := RunProgram("Hello\\nThere")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \"Hello\nThere\"")
+	}
+}
+
+func TestAudit6(t *testing.T) {
+	ans := []string{
+		` _    _          _   _          `,
+		`| |  | |        | | | |         `,
+		`| |__| |   ___  | | | |   ___   `,
+		`|  __  |  / _ \ | | | |  / _ \  `,
+		`| |  | | |  __/ | | | | | (_) | `,
+		`|_|  |_|  \___| |_| |_|  \___/  `,
+		`                                `,
+		`                                `,
+		``,
+		` _______   _                           `,
+		`|__   __| | |                          `,
+		`   | |    | |__     ___   _ __    ___  `,
+		`   | |    |  _ \   / _ \ | '__|  / _ \ `,
+		`   | |    | | | | |  __/ | |    |  __/ `,
+		`   |_|    |_| |_|  \___| |_|     \___| `,
+		`                                       `,
+		`                                       `,
+	}
+	err, txt := RunProgram("Hello\\n\\nThere")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \"Hello\n\nThere\"")
+	}
+}
+
+func TestAudit7(t *testing.T) {
+	ans := []string{
+		`   __  _    _          _   _                                _______   _                                    _  _    __    `,
+		`  / / | |  | |        | | | |                 ___          |__   __| | |                                 _| || |_  \ \   `,
+		` | |  | |__| |   ___  | | | |   ___          ( _ )            | |    | |__     ___   _ __    ___        |_  __  _|  | |  `,
+		`/ /   |  __  |  / _ \ | | | |  / _ \         / _ \/\          | |    |  _ \   / _ \ | '__|  / _ \        _| || |_    \ \ `,
+		`\ \   | |  | | |  __/ | | | | | (_) |       | (_>  <          | |    | | | | |  __/ | |    |  __/       |_  __  _|   / / `,
+		` | |  |_|  |_|  \___| |_| |_|  \___/         \___/\/          |_|    |_| |_|  \___| |_|     \___|         |_||_|    | |  `,
+		`  \_\                                                                                                              /_/   `,
+		`                                                                                                                         `,
+	}
+	err, txt := RunProgram("{Hello & There #}")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \"{Hello & There #}\"")
+	}
+}
+
+func TestAudit8(t *testing.T) {
+	ans := []string{
+		` _              _   _                 _______   _                                            _                           _  `,
+		`| |            | | | |               |__   __| | |                                 _        | |                  ____   | | `,
+		`| |__     ___  | | | |   ___            | |    | |__     ___   _ __    ___        / |       | |_    ___         |___ \  | | `,
+		`|  _ \   / _ \ | | | |  / _ \           | |    |  _ \   / _ \ | '__|  / _ \       | |       | __|  / _ \          __) | | | `,
+		`| | | | |  __/ | | | | | (_) |          | |    | | | | |  __/ | |    |  __/       | |       \ |_  | (_) |        / __/  |_| `,
+		`|_| |_|  \___| |_| |_|  \___/           |_|    |_| |_|  \___| |_|     \___|       |_|        \__|  \___/        |_____| (_) `,
+		`                                                                                                                            `,
+		`                                                                                                                            `,
+	}
+	err, txt := RunProgram("hello There 1 to 2!")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \"hello There 1 to 2!\"")
+	}
+}
+
+func TestAudit9(t *testing.T) {
+	ans := []string{
+		` __  __           _____            _____                              _        _    _____   _               _   _  `,
+		`|  \/  |         |  __ \   _____  |_   _|            /\       ___    | |      (_)  / ____| | |             | \ | | `,
+		`| \  / |   __ _  | |  | | |___ /    | |    _ __     /  \     ( _ )   | |       _  | (___   | |__     ___   |  \| | `,
+		"| |\\/| |  / _` | | |  | |   |_ \\    | |   | '__|   / /\\ \\    / _ \\/\\ | |      | |  \\___ \\  | '_ \\   / _ \\  | . ` | ",
+		`| |  | | | (_| | | |__| |  ___) |  _| |_  | |     / ____ \  | (_>  < | |____  | |  ____) | | |_) | | (_) | | |\  | `,
+		`|_|  |_|  \__,_| |_____/  |____/  |_____| |_|    /_/    \_\  \___/\/ |______| |_| |_____/  |_.__/   \___/  |_| \_| `,
+		`                                                                                                                   `,
+		`                                                                                                                   `,
+	}
+	err, txt := RunProgram("MaD3IrA&LiSboN")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \"MaD3IrA&LiSboN\"")
+	}
+}
+
+func TestAudit11(t *testing.T) {
+	ans := []string{
+		`   __  _  __     /\/| `,
+		`  / / | | \ \   |/\/  `,
+		` | |  | |  | |        `,
+		`/ /   | |   \ \       `,
+		`\ \   | |   / /       `,
+		` | |  | |  | |        `,
+		`  \_\ | | /_/         `,
+		`      |_|             `,
+	}
+	err, txt := RunProgram("{|}~")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \"{|}~\"")
+	}
+}
+
+func TestAudit12(t *testing.T) {
+	ans := []string{
+		` ___  __       ___   /\                  _          `,
+		`|  _| \ \     |_  | |/\|                ( )         `,
+		`| |    \ \      | |                     |/    __ _  `,
+		"| |     \\ \\     | |                          / _` | ",
+		"| |      \\ \\    | |                         | (_| | ",
+		"| |_      \\_\\  _| |                          \\__,_| ",
+		"|___|         |___|       ______                    ",
+		`                         |______|                   `,
+	}
+	err, txt := RunProgram("[\\]^_ 'a")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \"[\\]^_ 'a\"")
+	}
+}
+
+func TestAudit13(t *testing.T) {
+	ans := []string{
+		` _____     _____   ____   `,
+		`|  __ \   / ____| |  _ \  `,
+		`| |__) | | |  __  | |_) | `,
+		`|  _  /  | | |_ | |  _ <  `,
+		`| | \ \  | |__| | | |_) | `,
+		`|_|  \_\  \_____| |____/  `,
+		`                          `,
+		`                          `,
+	}
+	err, txt := RunProgram("RGB")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \"RGB\"")
+	}
+}
+
+func TestAudit14(t *testing.T) {
+	ans := []string{
+		`           __          __     ___             `,
+		` _   _    / /  ______  \ \   |__ \     ____   `,
+		`(_) (_)  / /  |______|  \ \     ) |   / __ \  `,
+		"        < <    ______    > >   / /   / / _` | ",
+		` _   _   \ \  |______|  / /   |_|   | | (_| | `,
+		`(_) ( )   \_\          /_/    (_)    \ \__,_| `,
+		`    |/                                \____/  `,
+		`                                              `,
+	}
+	err, txt := RunProgram(":;<=>?@")
+	if err != nil {
+		t.Errorf("Couldn't run the program: %s\n", err)
+	}
+	areEqual := AreStringSlicesEqual(ans, txt)
+	if areEqual != nil {
+		t.Log(areEqual)
+		t.Error("Invalid output for \":;<=>?@\"")
+	}
+}
+
+
+//banner testing
+func RunProgramBanner(text string, banner string) (err error, output []string) {
+	cmd := exec.Command("go", "run", ".", text,banner)
+
+	o, e := cmd.CombinedOutput()
+	if e != nil {
+		return e, nil
+	}
+	return nil, BytesToStringSlice(o)
+}
+
+func TestAudit15(t *testing.T) {
+	ans := []string{
+		` _              _   _          `,
+		`| |            | | | |         `,
+		`| |__     ___  | | | |   ___   `,
+		`|  _ \   / _ \ | | | |  / _ \  `,
+		`| | | | |  __/ | | | | | (_) | `,
+		`|_| |_|  \___| |_| |_|  \___/  `,
+		`                               `,
+		`                               `,
+	}
+	err, txt := RunProgramBanner("hello", "standard")
 	if err != nil {
 		t.Errorf("Couldn't run the program: %s\n", err)
 	}
@@ -74,7 +389,7 @@ func TestAudit1(t *testing.T) {
 	}
 }
 
-func TestAudit2(t *testing.T) {
+func TestAudit16(t *testing.T) {
 	ans := []string{
 		`                                                                                        `,
 		`_|                _| _|                                                     _|       _| `,
@@ -85,7 +400,7 @@ func TestAudit2(t *testing.T) {
 		`                                                                                        `,
 		`                                                                                        `,		
 	}
-	err, txt := RunProgram("hello world", "shadow")
+	err, txt := RunProgramBanner("hello world", "shadow")
 	if err != nil {
 		t.Errorf("Couldn't run the program: %s\n", err)
 	}
@@ -96,7 +411,7 @@ func TestAudit2(t *testing.T) {
 	}
 }
 
-func TestAudit3(t *testing.T) {
+func TestAudit17(t *testing.T) {
 	ans := []string{
 		`                                                                       `,
 		`                       --                       o                      `,
@@ -107,7 +422,7 @@ func TestAudit3(t *testing.T) {
 		`                                                            |          `,
 		`                                                         o--o          `,
 	}
-	err, txt := RunProgram("nice 2 meet you", "thinkertoy")
+	err, txt := RunProgramBanner("nice 2 meet you", "thinkertoy")
 	if err != nil {
 		t.Errorf("Couldn't run the program: %s\n", err)
 	}
@@ -141,7 +456,7 @@ func TestAudit3(t *testing.T) {
 // 	}
 // }
 
-func TestAudit5(t *testing.T) {
+func TestAudit18(t *testing.T) {
 	ans := []string{
 		`                       `,
 		`  _|   _|_|   _|_|_|   `,
@@ -152,7 +467,7 @@ func TestAudit5(t *testing.T) {
 		`                       `,
 		`                       `,
 	}
-	err, txt := RunProgram("123", "shadow")
+	err, txt := RunProgramBanner("123", "shadow")
 	if err != nil {
 		t.Errorf("Couldn't run the program: %s\n", err)
 	}
@@ -163,7 +478,7 @@ func TestAudit5(t *testing.T) {
 	}
 }
 
-func TestAudit6(t *testing.T) {
+func TestAudit19(t *testing.T) {
 	ans := []string{
 		`         o o    `,
 		`    o  / | | \  `,
@@ -174,7 +489,7 @@ func TestAudit6(t *testing.T) {
 		`                `,
 		`                `,
 	}
-	err, txt := RunProgram("/(\")", "thinkertoy")
+	err, txt := RunProgramBanner("/(\")", "thinkertoy")
 	if err != nil {
 		t.Errorf("Couldn't run the program: %s\n", err)
 	}
@@ -185,7 +500,7 @@ func TestAudit6(t *testing.T) {
 	}
 }
 
-func TestAudit7(t *testing.T) {
+func TestAudit20(t *testing.T) {
 	ans := []string{
 			`                                                                                                                                                                                                                                                              `,
 			`  _|_|   _|_|_|     _|_|_| _|_|_|   _|_|_|_| _|_|_|_|   _|_|_| _|    _| _|_|_|       _| _|    _| _|       _|      _| _|      _|   _|_|   _|_|_|     _|_|     _|_|_|     _|_|_| _|_|_|_|_| _|    _| _|      _| _|          _| _|      _| _|      _| _|_|_|_|_| `,
@@ -196,7 +511,7 @@ func TestAudit7(t *testing.T) {
 			`                                                                                                                                                                                                                                                              `,
 			`                                                                                                                                                                                                                                                              `,
 	}
-	err, txt := RunProgram("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "shadow")
+	err, txt := RunProgramBanner("ABCDEFGHIJKLMNOPQRSTUVWXYZ", "shadow")
 	if err != nil {
 		t.Errorf("Couldn't run the program: %s\n", err)
 	}
@@ -207,7 +522,7 @@ func TestAudit7(t *testing.T) {
 	}
 }
 
-func TestAudit8(t *testing.T) {
+func TestAudit21(t *testing.T) {
 	ans := []string{
 			`o o         | |                                                  `,
 			`| |  | |   -O-O-      O          o  / \  o | o                 o `,
@@ -219,7 +534,7 @@ func TestAudit8(t *testing.T) {
 			`                                                                 `,
 	
 	}
-	err, txt := RunProgram("\"#$%&/()*+,-./", "thinkertoy")
+	err, txt := RunProgramBanner("\"#$%&/()*+,-./", "thinkertoy")
 	if err != nil {
 		t.Errorf("Couldn't run the program: %s\n", err)
 	}
@@ -230,7 +545,7 @@ func TestAudit8(t *testing.T) {
 	}
 }
 
-func TestAudit9(t *testing.T) {
+func TestAudit22(t *testing.T) {
 	ans := []string{
 			`          o                                              `,
 			`o-O-o  o  |           o       o         o                `,
@@ -242,7 +557,7 @@ func TestAudit9(t *testing.T) {
 			`                                                    o--o `,
 
 	}
-	err, txt := RunProgram("It's Working", "thinkertoy")
+	err, txt := RunProgramBanner("It's Working", "thinkertoy")
 	if err != nil {
 		t.Errorf("Couldn't run the program: %s\n", err)
 	}
