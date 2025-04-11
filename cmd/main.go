@@ -6,6 +6,7 @@ import (
 
 	"ascii-art-reverse/internal/banner"
 	"ascii-art-reverse/internal/input"
+	"ascii-art-reverse/internal/output"
 	"ascii-art-reverse/internal/renderer"
 )
 
@@ -26,13 +27,23 @@ func main() {
 	artRenderer := renderer.NewRenderer(bannerArt)
 
 	// Render the text
-	output, err := artRenderer.RenderText(config.Text)
+	renderedOutput, err := artRenderer.RenderText(config.Text)
 	if err != nil {
 		log.Fatalf("Rendering error: %v", err)
 	}
 
-	// Print the output
-	for _, line := range output {
-		fmt.Println(line)
+	// Determine output method
+	if config.OutputFile != "" {
+		// Write to file
+		err := output.WriteOutputToFile(config.OutputFile, renderedOutput)
+		if err != nil {
+			log.Fatalf("File writing error: %v", err)
+		}
+		fmt.Printf("Output written to %s\n", config.OutputFile)
+	} else {
+		// Print to console
+		for _, line := range renderedOutput {
+			fmt.Println(line)
+		}
 	}
 }
