@@ -1,4 +1,4 @@
-package main
+package tests
 
 import (
 	"bytes"
@@ -355,7 +355,7 @@ func TestAudit14(t *testing.T) {
 	}
 }
 
-//banner testing
+// banner testing
 func RunProgramBanner(text string, banner string) (err error, output []string) {
 	cmd := exec.Command("go", "run", ".", text, banner)
 

@@ -1,3 +1,3 @@
-module asciiArt
+module ascii-art-reverse
 
-go 1.20
+go 1.23.4
